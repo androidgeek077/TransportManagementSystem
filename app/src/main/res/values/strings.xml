@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TransportManagementSystem</string>
+    <string name="dont_you_have_a_account_yet">
+</string>
+    <string name="signup">REGISTER</string>
+    <string name="google_status_fmt">Google User: %s</string>
+    <string name="google_title_text">Google Sign In</string>
+    <string name="firebase_status_fmt">Firebase UID: %s</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="view_images">View Images</string>
+    <string name="signup_here">Signup Here</string>
+
 </resources>
