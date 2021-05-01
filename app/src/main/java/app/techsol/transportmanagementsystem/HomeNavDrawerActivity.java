@@ -4,35 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import app.techsol.Fragments.AddMoneyFragment;
+import app.techsol.Fragments.ApplyPassFragment;
+import app.techsol.Fragments.BookTicketFragment;
 import app.techsol.Fragments.DashboardFragment;
 
 
@@ -134,13 +120,17 @@ public class HomeNavDrawerActivity extends AppCompatActivity
             // Handle the camera action
 
         } else if (id == R.id.nav_add_money) {
-//            FragmentLoadinManagerWithBackStack(new SigninFragment());
+            FragmentLoadinManagerWithBackStack(new AddMoneyFragment());
         } else if (id == R.id.nav_busspass) {
-
+            FragmentLoadinManagerWithBackStack(new ApplyPassFragment());
+        } else if (id == R.id.nav_tickets) {
+            FragmentLoadinManagerWithBackStack(new BookTicketFragment());
+        } else if (id == R.id.nav_signn) {
+            startActivity(new Intent(HomeNavDrawerActivity.this, MainActivity.class));
+        }else if (id == R.id.nav_signup) {
+            startActivity(new Intent(HomeNavDrawerActivity.this, SignupActivity.class));
         }
-//        else if (id == R.id.nav_send) {
-//
-//        }
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

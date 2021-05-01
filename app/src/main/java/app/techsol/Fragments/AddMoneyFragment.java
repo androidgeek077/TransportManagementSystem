@@ -2,65 +2,81 @@ package app.techsol.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import app.techsol.Models.MoneyModel;
 import app.techsol.transportmanagementsystem.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddMoneyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class AddMoneyFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    EditText AddMoneyET;
+    String moneyStr;
+    Button AddmoneyBtn;
+
+    FirebaseAuth auth;
+    DatabaseReference ref;
 
     public AddMoneyFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddMoneyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddMoneyFragment newInstance(String param1, String param2) {
-        AddMoneyFragment fragment = new AddMoneyFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_money, container, false);
+        View view= inflater.inflate(R.layout.fragment_add_money, container, false);
+        ref= FirebaseDatabase.getInstance().getReference("Money");
+        auth=FirebaseAuth.getInstance();
+        AddMoneyET=view.findViewById(R.id.AddMoneyET);
+        AddmoneyBtn=view.findViewById(R.id.AddmoneyBtn);
+        AddmoneyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AddMoneyET.getText().toString().isEmpty()){
+                    Toast.makeText(getContext(), "Please Add Money First", Toast.LENGTH_SHORT).show();
+                } else {
+                    String userid=auth.getCurrentUser().getUid();
+                    String id=ref.push().getKey();
+                    String moneyStr=AddMoneyET.getText().toString();
+                    MoneyModel moneyModel=new MoneyModel(id, userid, moneyStr);
+                    ref.child(id).setValue(moneyModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Toast.makeText(getContext(), "Money Added Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+
+        return view;
     }
 }
