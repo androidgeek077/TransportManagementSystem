@@ -37,7 +37,7 @@
             android:hint="Name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/NameET"
+                android:id="@+id/nameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -50,7 +50,7 @@
             android:hint="Email">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/EmailET"
+                android:id="@+id/emailET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -63,7 +63,7 @@
             android:hint="Password">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/PsswordET"
+                android:id="@+id/PasswordET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -76,7 +76,7 @@
             android:hint="Mobile No.">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/MblNoET"
+                android:id="@+id/phoneET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -121,20 +121,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="Gender: " />
-
-            <CheckBox
-                android:id="@+id/MaleCB"
+            <RadioGroup
+                android:id="@+id/mGenderradioGrp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/MaleRB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Male" />
 
-            <CheckBox
-                android:id="@+id/FemaleCB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Female" />
+                <RadioButton
+                    android:id="@+id/FemaleRB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Female" />
+            </RadioGroup>
         </LinearLayout>
 
         <Button

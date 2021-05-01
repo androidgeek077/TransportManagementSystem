@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "124836767385",
+    "project_id": "digital-bus-pass-system-815b6",
+    "storage_bucket": "digital-bus-pass-system-815b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124836767385:android:c58ecaf999147b89887a08",
+        "android_client_info": {
+          "package_name": "app.techsol.transportmanagementsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124836767385-4c2bs07691ggp6b53up4au2i0uq1gjmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVeciFyZ9cpL0X7jJFbONyxkHjJQD32d4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124836767385-4c2bs07691ggp6b53up4au2i0uq1gjmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
