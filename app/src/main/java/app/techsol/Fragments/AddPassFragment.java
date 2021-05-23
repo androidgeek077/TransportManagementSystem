@@ -70,7 +70,7 @@ public class AddPassFragment extends Fragment {
                 }else {
                     mProgressBar.setVisibility(View.VISIBLE);
                     keyid=ref.push().getKey();
-                    PassModel passModel=new PassModel(keyid, userIdStr, currentDateStr,startDateStr, endDateStr, busTypeStr, descriptionStr,"");
+                    PassModel passModel=new PassModel(keyid, userIdStr, currentDateStr,startDateStr, endDateStr, busTypeStr, descriptionStr,"", "pending");
                     ref.child(keyid).setValue(passModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

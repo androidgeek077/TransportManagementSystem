@@ -1,7 +1,17 @@
 package app.techsol.Models;
 
 public class PassModel {
-    String passid, userid, currentdate, passstartdate, passenddate, bustype, description, qrurl;
+    String passid;
+    String userid;
+    String currentdate;
+    String passstartdate;
+    String passenddate;
+    String bustype;
+    String description;
+    String qrurl;
+
+    public PassModel() {
+    }
 
     public String getPassid() {
         return passid;
@@ -67,10 +77,15 @@ public class PassModel {
         this.qrurl = qrurl;
     }
 
-    public PassModel() {
+    public String getpassstatus() {
+        return passstatus;
     }
 
-    public PassModel(String passid, String userid, String currentdate, String passstartdate, String passenddate, String bustype, String description, String qrurl) {
+    public void setpassstatus(String passstatus) {
+        this.passstatus = passstatus;
+    }
+
+    public PassModel(String passid, String userid, String currentdate, String passstartdate, String passenddate, String bustype, String description, String qrurl, String passstatus) {
         this.passid = passid;
         this.userid = userid;
         this.currentdate = currentdate;
@@ -79,5 +94,10 @@ public class PassModel {
         this.bustype = bustype;
         this.description = description;
         this.qrurl = qrurl;
+        this.passstatus = passstatus;
     }
+
+    String passstatus;
+
+   
 }
