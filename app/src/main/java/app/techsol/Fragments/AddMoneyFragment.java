@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +36,7 @@ public class AddMoneyFragment extends Fragment {
 
     FirebaseAuth auth;
     DatabaseReference ref;
+    ProgressBar mProgressBar;
 
     public AddMoneyFragment() {
         // Required empty public constructor
@@ -48,6 +50,7 @@ public class AddMoneyFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_add_money, container, false);
         ref= FirebaseDatabase.getInstance().getReference("Money");
         auth=FirebaseAuth.getInstance();
+        mProgressBar=view.findViewById(R.id.mProgressBar);
         AddMoneyET=view.findViewById(R.id.AddMoneyET);
         AddmoneyBtn=view.findViewById(R.id.AddmoneyBtn);
         AddmoneyBtn.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +59,7 @@ public class AddMoneyFragment extends Fragment {
                 if (AddMoneyET.getText().toString().isEmpty()){
                     Toast.makeText(getContext(), "Please Add Money First", Toast.LENGTH_SHORT).show();
                 } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
                     String userid=auth.getCurrentUser().getUid();
                     String id=ref.push().getKey();
                     String moneyStr=AddMoneyET.getText().toString();
@@ -64,12 +68,14 @@ public class AddMoneyFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
+                                mProgressBar.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "Money Added Successfully", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            mProgressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });

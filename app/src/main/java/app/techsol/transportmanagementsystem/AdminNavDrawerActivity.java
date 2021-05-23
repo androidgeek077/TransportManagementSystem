@@ -1,11 +1,5 @@
 package app.techsol.transportmanagementsystem;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,30 +7,32 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import app.techsol.AdminFragments.AddBusFragment;
+import app.techsol.AdminFragments.AddConductorFragment;
+import app.techsol.AdminFragments.ManageUsersFragment;
+import app.techsol.AdminFragments.PassReportsFragment;
 import app.techsol.Fragments.AddMoneyFragment;
 import app.techsol.Fragments.AddPassFragment;
-import app.techsol.Fragments.ApplyPassFragment;
 import app.techsol.Fragments.BookTicketFragment;
 import app.techsol.Fragments.DashboardFragment;
 import app.techsol.Fragments.ViewPassFragment;
 
+public class AdminNavDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-public class HomeNavDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
-    int IncomingDataLength = 0;
-    TextView textCartItemCount;
-    public int mCartItemCount;
-    DashboardFragment fragment;
-    String cutomer_id;
+    private DashboardFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_nav_drawer);
+        setContentView(R.layout.activity_admin_nav_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //
@@ -66,8 +62,7 @@ public class HomeNavDrawerActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home_nav_drawer, menu);
-        final MenuItem menuItem = menu.findItem(R.id.loginBtn);
+        getMenuInflater().inflate(R.menu.admin_menu_bar, menu);
 
 
 //        actionView.setOnClickListener(new View.OnClickListener() {
@@ -93,10 +88,10 @@ public class HomeNavDrawerActivity extends AppCompatActivity
             Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "Logged Out", Snackbar.LENGTH_SHORT);
             snackbar.show();
             return true;
-        } else if (id==R.id.action_add_pass){
-            FragmentLoadinManagerWithBackStack(new AddPassFragment());
-        } else if (id==R.id.action_book_ticket){
-            FragmentLoadinManagerWithBackStack(new BookTicketFragment());
+        } else if (id==R.id.nav_pass_report){
+            FragmentLoadinManagerWithBackStack(new PassReportsFragment());
+        } else if (id==R.id.nav_add_bus){
+            FragmentLoadinManagerWithBackStack(new AddBusFragment());
 
         }
 //        else if (id == R.id.optCart) {
@@ -126,19 +121,13 @@ public class HomeNavDrawerActivity extends AppCompatActivity
             FragmentLoadinManagerWithBackStack(new DashboardFragment());
             // Handle the camera action
 
-        } else if (id == R.id.nav_add_money) {
-            FragmentLoadinManagerWithBackStack(new AddMoneyFragment());
-        } else if (id == R.id.nav_busspass) {
-            FragmentLoadinManagerWithBackStack(new ViewPassFragment());
-        } else if (id == R.id.nav_tickets) {
-            FragmentLoadinManagerWithBackStack(new BookTicketFragment());
-        } else if (id == R.id.nav_signn) {
-            startActivity(new Intent(HomeNavDrawerActivity.this, MainActivity.class));
-        }else if (id == R.id.nav_signup) {
-            startActivity(new Intent(HomeNavDrawerActivity.this, SignupActivity.class));
+        } else if (id==R.id.nav_pass_report){
+            FragmentLoadinManagerWithBackStack(new ManageUsersFragment());
+        } else if (id==R.id.nav_add_bus){
+            FragmentLoadinManagerWithBackStack(new AddBusFragment());
+        } else if (id == R.id.nav_add_conductor) {
+            FragmentLoadinManagerWithBackStack(new AddConductorFragment());
         }
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

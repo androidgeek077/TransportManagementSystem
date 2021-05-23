@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/dashboard" />
+        <item
+            android:icon="@drawable/ic_money"
+            android:id="@+id/nav_pass_report"
+            android:title="Pass Reports" />
+        <item
+            android:icon="@drawable/ic_bus_pass"
+            android:id="@+id/nav_add_bus"
+            android:title="Add Bus" />
+        <item
+            android:icon="@drawable/ic_ticket"
+            android:id="@+id/nav_add_conductor"
+            android:title=" Add Conductor" />
+        <item
+            android:icon="@drawable/ic_profile"
+            android:id="@+id/nav_add_route"
+            android:title="Add Route" />
+
+    </group>
+
+    <item android:title="@string/communicate">
+        <menu>
+
+            <item
+                android:icon="@drawable/ic_add_user"
+                android:id="@+id/nav_signup"
+                android:title="Signup" />
+            <item
+                android:icon="@drawable/ic_user"
+                android:id="@+id/nav_signn"
+                android:title="@string/signin" />
+        </menu>
+    </item>
+
+</menu>

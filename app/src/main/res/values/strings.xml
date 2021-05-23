@@ -21,5 +21,12 @@
     <string name="add_money">Add Money</string>
     <string name="dashboard">DashBoard</string>
     <string name="signin">Signin</string>
+    <string name="todo">TODO</string>
+
+    <string-array name="bustype">
+        <item>Daewoo</item>
+        <item>Hi-Ass</item>
+        <item>Wagon</item>
+    </string-array>
 
 </resources>

@@ -1,7 +1,11 @@
 package app.techsol.Models;
 
 public class UserModel {
-String uid,username, useremail, userpassword, usermobileno, usercnic, useraddress, usergender;
+String uid;
+    String usertype;
+
+    public UserModel() {
+    }
 
     public String getUid() {
         return uid;
@@ -9,6 +13,14 @@ String uid,username, useremail, userpassword, usermobileno, usercnic, useraddres
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(String usertype) {
+        this.usertype = usertype;
     }
 
     public String getUsername() {
@@ -67,11 +79,9 @@ String uid,username, useremail, userpassword, usermobileno, usercnic, useraddres
         this.usergender = usergender;
     }
 
-    public UserModel() {
-    }
-
-    public UserModel(String uid, String username, String useremail, String userpassword, String usermobileno, String usercnic, String useraddress, String usergender) {
+    public UserModel(String uid, String usertype, String username, String useremail, String userpassword, String usermobileno, String usercnic, String useraddress, String usergender) {
         this.uid = uid;
+        this.usertype = usertype;
         this.username = username;
         this.useremail = useremail;
         this.userpassword = userpassword;
@@ -80,4 +90,14 @@ String uid,username, useremail, userpassword, usermobileno, usercnic, useraddres
         this.useraddress = useraddress;
         this.usergender = usergender;
     }
+
+    String username;
+    String useremail;
+    String userpassword;
+    String usermobileno;
+    String usercnic;
+    String useraddress;
+    String usergender;
+
+
 }
