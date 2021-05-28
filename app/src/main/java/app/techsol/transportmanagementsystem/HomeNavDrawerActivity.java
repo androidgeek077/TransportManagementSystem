@@ -21,7 +21,9 @@ import app.techsol.Fragments.AddPassFragment;
 import app.techsol.Fragments.ApplyPassFragment;
 import app.techsol.Fragments.BookTicketFragment;
 import app.techsol.Fragments.DashboardFragment;
+import app.techsol.Fragments.ProfileFragment;
 import app.techsol.Fragments.ViewPassFragment;
+import app.techsol.Fragments.ViewTicketFragment;
 
 
 public class HomeNavDrawerActivity extends AppCompatActivity
@@ -131,7 +133,9 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_busspass) {
             FragmentLoadinManagerWithBackStack(new ViewPassFragment());
         } else if (id == R.id.nav_tickets) {
-            FragmentLoadinManagerWithBackStack(new BookTicketFragment());
+            FragmentLoadinManagerWithBackStack(new ViewTicketFragment());
+        }else if (id == R.id.nav_profile) {
+            FragmentLoadinManagerWithBackStack(new ProfileFragment());
         } else if (id == R.id.nav_signn) {
             startActivity(new Intent(HomeNavDrawerActivity.this, MainActivity.class));
         }else if (id == R.id.nav_signup) {

@@ -1,0 +1,106 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D6D3D3"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <FrameLayout
+            android:background="@drawable/bg_pic"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="@color/color_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Your Balance is"
+                        app:fontFamily="@font/baloo_bhai" />
+
+                    <TextView
+                        android:textColor="@color/color_white"
+                        android:id="@+id/userBalanceTV"
+                        android:textSize="24sp"
+                        android:text="Rs. 0.53"
+                        app:fontFamily="@font/baloo_bhai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/userNameTV"
+                        android:textColor="@color/color_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Waqas Ahmad"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:textColor="@color/color_white"
+                        android:id="@+id/userPhoneTV"
+                        android:textSize="22sp"
+                        android:text="03004626618"
+                        app:fontFamily="@font/baloo_bhai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+        <TextView
+            android:id="@+id/introTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/baloo_bhai"
+            android:text="My Tickets"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main_recycler_vw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </LinearLayout>
+</ScrollView>

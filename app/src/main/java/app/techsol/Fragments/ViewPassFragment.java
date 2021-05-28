@@ -32,7 +32,6 @@ import app.techsol.transportmanagementsystem.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ViewPassFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ViewPassFragment extends Fragment {
