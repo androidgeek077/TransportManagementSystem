@@ -49,6 +49,11 @@ public class BusModel {
     public BusModel() {
     }
 
+
+
+    String busfare;
+    Double buslat, buslong;
+
     public BusModel(String busid, String busname, String busno, String bustype, String busfare) {
         this.busid = busid;
         this.busname = busname;
@@ -57,5 +62,13 @@ public class BusModel {
         this.busfare = busfare;
     }
 
-    String busfare;
+    public BusModel(String busid, String busname, String busno, String bustype, String busfare, Double buslat, Double buslong) {
+        this.busid = busid;
+        this.busname = busname;
+        this.busno = busno;
+        this.bustype = bustype;
+        this.busfare = busfare;
+        this.buslat = buslat;
+        this.buslong = buslong;
+    }
 }

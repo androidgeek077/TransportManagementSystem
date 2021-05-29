@@ -39,10 +39,7 @@ import app.techsol.transportmanagementsystem.R;
  */
 public class ViewTicketFragment extends Fragment {
 
-
     private ArrayList<String> mCategories = new ArrayList<>();
-
-
     int countInt, incrementalCount;
     DatabaseReference BusesReference, myTicketRef;
     FirebaseAuth auth;
