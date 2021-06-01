@@ -12,8 +12,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import app.techsol.AdminFragments.AddBusFragment;
 import app.techsol.AdminFragments.AddConductorFragment;
@@ -28,16 +30,16 @@ import app.techsol.Fragments.ViewPassFragment;
 public class AdminNavDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DashboardFragment fragment;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_nav_drawer);
+        auth=FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//
-//        getAllProducts();getDahBoardData();
-////        getOrders();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -62,7 +64,7 @@ public class AdminNavDrawerActivity extends AppCompatActivity implements Navigat
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.admin_menu_bar, menu);
+        getMenuInflater().inflate(R.menu.home_nav_drawer, menu);
 
 
 //        actionView.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +86,9 @@ public class AdminNavDrawerActivity extends AppCompatActivity implements Navigat
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            FragmentLoadinManagerWithBackStack(new DashboardFragment());
-            Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "Logged Out", Snackbar.LENGTH_SHORT);
-            snackbar.show();
+            auth.signOut();
+            startActivity(new Intent(AdminNavDrawerActivity.this, MainActivity.class));
+
             return true;
         } else if (id==R.id.nav_pass_report){
             FragmentLoadinManagerWithBackStack(new PassReportsFragment());
@@ -125,8 +127,8 @@ public class AdminNavDrawerActivity extends AppCompatActivity implements Navigat
             FragmentLoadinManagerWithBackStack(new ManageUsersFragment());
         } else if (id==R.id.nav_add_bus){
             FragmentLoadinManagerWithBackStack(new AddBusFragment());
-        } else if (id == R.id.nav_add_conductor) {
-            FragmentLoadinManagerWithBackStack(new AddConductorFragment());
+        } else if (id == R.id.nav_signin) {
+            startActivity( new Intent(getApplicationContext(), MainActivity.class));
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

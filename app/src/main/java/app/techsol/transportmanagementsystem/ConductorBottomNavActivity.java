@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import app.techsol.ConductorFragments.ScanQRActivity;
 import app.techsol.ConductorFragments.ViewBusesFragment;
 
 
@@ -37,6 +38,8 @@ public class ConductorBottomNavActivity extends AppCompatActivity {
 //                   ViewMechanicFragment
                     return true;
                 case R.id.navigation_notifications:
+                    startActivity(new Intent(getApplicationContext(), ScanQRActivity.class));
+
 //                    FragmentLoadinManagerNoBackStack(new AboutUsFragment());
                     return true;
             }

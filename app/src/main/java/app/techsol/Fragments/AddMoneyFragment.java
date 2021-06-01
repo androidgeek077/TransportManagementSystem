@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import app.techsol.Models.MoneyModel;
 import app.techsol.transportmanagementsystem.R;
@@ -33,10 +36,15 @@ public class AddMoneyFragment extends Fragment {
     EditText AddMoneyET;
     String moneyStr;
     Button AddmoneyBtn;
+    private DatabaseReference UserRef;
+
 
     FirebaseAuth auth;
     DatabaseReference ref;
     ProgressBar mProgressBar;
+    String userId;
+    private String userBalance;
+    private int userBalanceInt;
 
     public AddMoneyFragment() {
         // Required empty public constructor
@@ -48,8 +56,9 @@ public class AddMoneyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_add_money, container, false);
-        ref= FirebaseDatabase.getInstance().getReference("Money");
         auth=FirebaseAuth.getInstance();
+        userId= getArguments().getString("userid");
+        ref= FirebaseDatabase.getInstance().getReference("Users");
         mProgressBar=view.findViewById(R.id.mProgressBar);
         AddMoneyET=view.findViewById(R.id.AddMoneyET);
         AddmoneyBtn=view.findViewById(R.id.AddmoneyBtn);
@@ -61,15 +70,14 @@ public class AddMoneyFragment extends Fragment {
                 } else {
                     mProgressBar.setVisibility(View.VISIBLE);
                     String userid=auth.getCurrentUser().getUid();
-                    String id=ref.push().getKey();
-                    String moneyStr=AddMoneyET.getText().toString();
-                    MoneyModel moneyModel=new MoneyModel(id, userid, moneyStr);
-                    ref.child(id).setValue(moneyModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    moneyStr=AddMoneyET.getText().toString();
+                    userBalanceInt=userBalanceInt+(Integer.parseInt(moneyStr));
+                    ref.child(userid).child("balance").setValue(""+userBalanceInt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
                                 mProgressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), "Money Added Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Balance added Successfully", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -79,10 +87,39 @@ public class AddMoneyFragment extends Fragment {
                             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
                 }
             }
         });
 
         return view;
     }
+
+    private void getCurrentBalance() {
+
+        ref.child(userId).child("balance").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                userBalance = dataSnapshot.child("balance").getValue().toString();
+//                userName = dataSnapshot.child("username").getValue().toString();
+//                Toast.makeText(getContext(), userBalance, Toast.LENGTH_SHORT).show();
+                userBalanceInt = Integer.parseInt(userBalance);
+//                Glide.with(getContext())
+//                        .load( UserImgUrl)
+//                        .into(mProfilePic);
+//                Glide.with(getContext())
+//                        .load( UserImgUrl)
+//                        .into(mBgPic);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

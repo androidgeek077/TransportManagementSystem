@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="2dp"
     app:cardElevation="5dp">
@@ -12,7 +12,7 @@
         android:background="#F0F1EE"
         android:orientation="vertical"
         android:padding="10dp"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,13 +117,27 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/openPassesIV"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_next" />
+        <LinearLayout
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
+            <Button
+                android:id="@+id/addMoneyBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add Money" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/openPassesIV"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_next" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

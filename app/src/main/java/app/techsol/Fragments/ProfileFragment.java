@@ -29,7 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import app.techsol.Models.TicketModel;
 import app.techsol.transportmanagementsystem.R;
@@ -46,6 +48,7 @@ public class ProfileFragment extends Fragment {
     ArrayList mLocationList, mLongList;
     DatabaseReference TicketsRef;
     RecyclerView mCustomerRecycVw;
+    Calendar myCalendar;
 
     FirebaseAuth auth;
 
@@ -56,6 +59,8 @@ public class ProfileFragment extends Fragment {
 
     private ImageView UserImage;
     private String userBalance;
+    private long date;
+    private SimpleDateFormat sdf;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +70,9 @@ public class ProfileFragment extends Fragment {
         getActivity().setTitle("Profile");
 
         UserRef= FirebaseDatabase.getInstance().getReference().child("Users");
-
+        myCalendar = Calendar.getInstance();
+        date = System.currentTimeMillis();
+        sdf = new SimpleDateFormat("MM/dd/yy");
         userNameTV=view.findViewById(R.id.userNameTV);
         userBalanceTV=view.findViewById(R.id.userBalanceTV);
         userPhoneTV=view.findViewById(R.id.userPhoneTV);
@@ -99,9 +106,15 @@ public class ProfileFragment extends Fragment {
 
                 holder.ticketPriceTV.setText("Rs. "+model.getTicketfare());
                 holder.busNoTV.setText("Bus #: "+model.getBusNo());
-                holder.busTypeTV.setText("Bus Type: Daewoo");
-//                holder.busTimeTV.setText(model);
-//                holder.ticketExpiryTV.setText("Status: Approved");
+                holder.tickcteStatusTV.setText("Bus Type: Daewoo");
+                if (model.getTicketstatus().equals("Issued")){
+                    holder.tickcteStatusTV.setText("Ticket Status: "+model.getTicketstatus());
+                } else if (!(sdf.format(date).equals(model.getValidityDate()))){
+                    holder.tickcteStatusTV.setText("Ticket Status: Expired");
+                } else {
+                    holder.tickcteStatusTV.setText("Ticket Status: Used");
+                }
+                holder.ticketExpiryTV.setText("Ticket Expiry: "+model.getValidityDate());
 
 
 //                Glide.with(getActivity().getApplicationContext()).load(model.getImageUrl()).into(holder.postImage);
@@ -151,7 +164,7 @@ public class ProfileFragment extends Fragment {
     public static class CustomersViewHolder extends  RecyclerView.ViewHolder {
 
 
-        TextView busRouteTV, ticketPriceTV, busNoTV, endDateTV, busTypeTV, busTimeTV, ticketExpiryTV;
+        TextView busRouteTV, ticketPriceTV, busNoTV, endDateTV, tickcteStatusTV, busTimeTV, ticketExpiryTV;
         
 
         public CustomersViewHolder(@NonNull View itemView) {
@@ -160,7 +173,7 @@ public class ProfileFragment extends Fragment {
             busRouteTV = (TextView) itemView.findViewById(R.id.busRouteTV);
             ticketPriceTV = (TextView) itemView.findViewById(R.id.ticketPriceTV);
             busNoTV = itemView.findViewById(R.id.busNoTV);
-            busTypeTV = itemView.findViewById(R.id.busTypeTV);
+            tickcteStatusTV = itemView.findViewById(R.id.tickcteStatusTV);
             busTimeTV = itemView.findViewById(R.id.busTimeTV);
             ticketExpiryTV = itemView.findViewById(R.id.ticketExpiryTV);
 
@@ -169,15 +182,14 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getStudentInfo() {
-//        mLocationList = new ArrayList<>();
-//        mLongList = new ArrayList<>();
+
         UserRef.child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 Username = dataSnapshot.child("username").getValue().toString();
                 UserPhone = dataSnapshot.child("usermobileno").getValue().toString();
-                userBalance = dataSnapshot.child("userbalance").getValue().toString();
+                userBalance = dataSnapshot.child("balance").getValue().toString();
 
                 userNameTV.setText(Username);
                 userBalanceTV.setText("Rs. "+userBalance);
@@ -197,14 +209,5 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-//    public void FragmentLoadinManagerNoBackStack(Fragment fragment) {
-//
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.main_fragment_container, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//
-//
-//    }
+
 }

@@ -1,5 +1,6 @@
 package app.techsol.AdminFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import app.techsol.Fragments.AddMoneyFragment;
 import app.techsol.Models.UserModel;
 import app.techsol.transportmanagementsystem.R;
 
@@ -87,6 +89,16 @@ public class ManageUsersFragment extends Fragment {
                         FragmentLoadinManagerWithBackStack(fragment);
                     }
                 });
+                holder.addMoneyBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userid", model.getUid());
+                        AddMoneyFragment fragment=new AddMoneyFragment();
+                        fragment.setArguments(bundle);
+                        FragmentLoadinManagerWithBackStack(fragment);
+                    }
+                });
 
 
             }
@@ -114,7 +126,7 @@ public class ManageUsersFragment extends Fragment {
         TextView userNameTV, userGenderTV, userAddressTV, userCnicTV, mobileNoTV, userEmailTV;
         ImageView openPassesIV;
         LinearLayout mItemCountLin;
-        Button btnOrderNow;
+        Button addMoneyBtn;
         CardView cardView;
 
         public UserViewHolder(@NonNull View itemView) {
@@ -127,6 +139,7 @@ public class ManageUsersFragment extends Fragment {
             mobileNoTV = itemView.findViewById(R.id.mobileNoTV);
             userEmailTV = itemView.findViewById(R.id.userEmailTV);
             openPassesIV = itemView.findViewById(R.id.openPassesIV);
+            addMoneyBtn = itemView.findViewById(R.id.addMoneyBtn);
 
 
         }

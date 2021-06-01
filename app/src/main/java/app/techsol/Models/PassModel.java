@@ -8,7 +8,7 @@ public class PassModel {
     String passenddate;
     String bustype;
     String description;
-    String qrurl;
+    String passprice;
 
     public PassModel() {
     }
@@ -69,12 +69,12 @@ public class PassModel {
         this.description = description;
     }
 
-    public String getQrurl() {
-        return qrurl;
+    public String getpassprice() {
+        return passprice;
     }
 
-    public void setQrurl(String qrurl) {
-        this.qrurl = qrurl;
+    public void setpassprice(String passprice) {
+        this.passprice = passprice;
     }
 
     public String getpassstatus() {
@@ -85,7 +85,7 @@ public class PassModel {
         this.passstatus = passstatus;
     }
 
-    public PassModel(String passid, String userid, String currentdate, String passstartdate, String passenddate, String bustype, String description, String qrurl, String passstatus) {
+    public PassModel(String passid, String userid, String currentdate, String passstartdate, String passenddate, String bustype, String description, String passprice, String passstatus) {
         this.passid = passid;
         this.userid = userid;
         this.currentdate = currentdate;
@@ -93,7 +93,7 @@ public class PassModel {
         this.passenddate = passenddate;
         this.bustype = bustype;
         this.description = description;
-        this.qrurl = qrurl;
+        this.passprice = passprice;
         this.passstatus = passstatus;
     }
 

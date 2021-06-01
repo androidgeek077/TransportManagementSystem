@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import app.techsol.Fragments.AddMoneyFragment;
 import app.techsol.Fragments.AddPassFragment;
@@ -34,6 +35,7 @@ public class HomeNavDrawerActivity extends AppCompatActivity
     public int mCartItemCount;
     DashboardFragment fragment;
     String cutomer_id;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_nav_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//
+        auth=FirebaseAuth.getInstance();
 //        getAllProducts();getDahBoardData();
 ////        getOrders();
 
@@ -53,6 +55,7 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         fragment = new DashboardFragment();
+        FragmentLoadinManagerWithBackStack(new ProfileFragment());
     }
 
     @Override
@@ -91,14 +94,10 @@ public class HomeNavDrawerActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            FragmentLoadinManagerWithBackStack(new DashboardFragment());
-            Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "Logged Out", Snackbar.LENGTH_SHORT);
-            snackbar.show();
+            auth.signOut();
+            startActivity(new Intent(HomeNavDrawerActivity.this, MainActivity.class));
+
             return true;
-        } else if (id==R.id.action_add_pass){
-            FragmentLoadinManagerWithBackStack(new AddPassFragment());
-        } else if (id==R.id.action_book_ticket){
-            FragmentLoadinManagerWithBackStack(new BookTicketFragment());
 
         }
 //        else if (id == R.id.optCart) {
@@ -125,11 +124,11 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            FragmentLoadinManagerWithBackStack(new DashboardFragment());
+            FragmentLoadinManagerWithBackStack(new ProfileFragment());
             // Handle the camera action
 
-        } else if (id == R.id.nav_add_money) {
-            FragmentLoadinManagerWithBackStack(new AddMoneyFragment());
+        } else if (id == R.id.nav_add_pass) {
+            FragmentLoadinManagerWithBackStack(new AddPassFragment());
         } else if (id == R.id.nav_busspass) {
             FragmentLoadinManagerWithBackStack(new ViewPassFragment());
         } else if (id == R.id.nav_tickets) {
@@ -157,104 +156,6 @@ public class HomeNavDrawerActivity extends AppCompatActivity
 
     }
 
-//    void getDahBoardData() {
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.catagories), new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                try {
-////                    Toast.makeText(HomeNavDrawerActivity.this, response, Toast.LENGTH_LONG).show();
-//                    //getting the data and saving them into separate arrays for using in the recycler view adapter
-//                    JSONObject jsonObject = new JSONObject(response);
-//                    JSONArray result = new JSONArray(jsonObject.getString("result"));
-//                    IncomingDataLength = result.length();
-//
-////                    Toast.makeText(HomeNavDrawerActivity.this, ""+result, Toast.LENGTH_SHORT).show();
-//
-//                    CataoryRVData capitalTransactionRvData = new CataoryRVData(IncomingDataLength);
-//
-//                    for (int i = 0; i < IncomingDataLength; i++) {
-//
-//                        JSONObject QueryData = result.getJSONObject(i);
-//                        capitalTransactionRvData.CatagotyName[i] = QueryData.getString("name");
-//                        capitalTransactionRvData.CatagotyId[i] = QueryData.getString("id");
-////                        capitalTransactionRvData.ProductName[i] = QueryData2.getString("name");
-//                        if (i == IncomingDataLength - 1) {
-//                            FragmentLoadinManagerWithBackStack(fragment);
-//                        }
-//                    }
-//
-//                } catch (JSONException e) {
-//                    Toast.makeText(HomeNavDrawerActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(HomeNavDrawerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_key", "jau5YO2LoV190mvJ08Lx3tGCQ0B7QdEd");
-//                return params;
-//            }
-//        };
-//
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(HomeNavDrawerActivity.this);
-//        requestQueue.add(stringRequest);
-//    }
-
-//    void getOrders() {
-//        StringRequest stringRequest = new StringRequest(1, "http://gharpochmutton.com/App/UserOrders", new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//
-//                try {
-////                    Toast.makeText(HomeNavDrawerActivity.this, response, Toast.LENGTH_LONG).show();
-//                    //getting the data and saving them into separate arrays for using in the recycler view adapter
-//                    JSONObject jsonObject = new JSONObject(response);
-//                    JSONArray result = new JSONArray(jsonObject.getString("result"));
-//                    IncomingDataLength = result.length();
-//
-////                    Toast.makeText(HomeNavDrawerActivity.this, ""+result, Toast.LENGTH_SHORT).show();
-//
-//                    OrderHistoryRecyclerVw capitalTransactionRvData = new OrderHistoryRecyclerVw(IncomingDataLength);
-//
-//                    for (int i = 0; i < IncomingDataLength; i++) {
-//                        JSONObject QueryData = result.getJSONObject(i);
-//                        capitalTransactionRvData.OrderId[i] = QueryData.getString("id");
-//                        capitalTransactionRvData.OrderAmount[i] = QueryData.getString("amount");
-//                        capitalTransactionRvData.OrderDate[i] = QueryData.getString("date");
-//                    }
-//
-//                } catch (JSONException e) {
-//                    Toast.makeText(HomeNavDrawerActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//
-//
-//            }
-//
-//
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(HomeNavDrawerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("api_key", "jau5YO2LoV190mvJ08Lx3tGCQ0B7QdEd");
-//                params.put("user_id", "2");
-//                return params;
-//            }
-//        };
-//        RequestQueue queue = Volley.newRequestQueue(HomeNavDrawerActivity.this);
-//        queue.add(stringRequest);
-//    }
 
 
 }

@@ -1,5 +1,8 @@
 package app.techsol.Fragments;
 
+import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +28,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.ArrayList;
 
@@ -38,6 +46,7 @@ public class ViewPassFragment extends Fragment {
 
     private ViewFlipper simpleViewFlipper;
     private ArrayList<String> mCategories=new ArrayList<>();
+    private Dialog dialog;
 
 
     int countInt, incrementalCount;
@@ -75,40 +84,21 @@ public class ViewPassFragment extends Fragment {
                 (getActivity()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
                 //if you need three fix imageview in width
 
-                holder.passHolderNameTV.setText("Muhammad Ali");
+                holder.passHolderNameTV.setText(model.getUserid());
 
-                holder.passPriceTV.setText("Balance: 250 rs");
+                holder.passPriceTV.setText("Rs."+model.getpassprice());
                 holder.startDateTV.setText(model.getCurrentdate());
                 holder.endDateTV.setText(model.getPassenddate());
                 holder.busTypeTV.setText("Bus Type: "+model.getBustype());
-                holder.mobileNoTV.setText("Mobile #: 03004626618");
-                holder.passStatusTV.setText("Status: Approved");
+                holder.mobileNoTV.setText("Booking Date:"+model.getCurrentdate());
+                holder.passStatusTV.setText("Status: "+model.getpassstatus());
+                holder.generateQRBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openDialog(model.getPassenddate());
+                    }
+                });
 
-
-//                Glide.with(getActivity().getApplicationContext()).load(model.getImageUrl()).into(holder.postImage);
-
-
-
-//                holder.mDelCustomerBtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        DatabaseReference key= getRef(position);
-//                        key.removeValue();
-//                    }
-//                });
-
-
-
-//                holder.mMinusBtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        count=holder.mTotalCount.getText().toString();
-//                        countInt=Integer.parseInt(count);
-//                        incrementalCount=countInt--;
-//
-//                        holder.mTotalCount.setText(countInt+"");
-//                    }
-//                });
 
 
             }
@@ -133,10 +123,8 @@ public class ViewPassFragment extends Fragment {
 
 
         TextView passHolderNameTV, passPriceTV, startDateTV, endDateTV, busTypeTV, mobileNoTV, passStatusTV;
-        TextView postDescription;
-        LinearLayout mItemCountLin;
-        Button btnOrderNow;
-        CardView cardView;
+
+        Button generateQRBtn;
 
         public CustomersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -148,8 +136,37 @@ public class ViewPassFragment extends Fragment {
             busTypeTV=itemView.findViewById(R.id.busTypeTV);
             mobileNoTV=itemView.findViewById(R.id.mobileNoTV);
             passStatusTV=itemView.findViewById(R.id.passStatusTV);
+            generateQRBtn=itemView.findViewById(R.id.generateQRBtn);
 
 
         }
     }
+
+    private void openDialog(String passExpiry) {
+        dialog = new Dialog(getContext(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        dialog.setContentView(R.layout.dialog_box_layout);
+        dialog.setTitle("QR Code");
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_AppCompat_DayNight_Dialog_Alert;
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        dialog.setCancelable(true);
+        ImageView sendRequestIV = dialog.findViewById(R.id.QRCodeGenerated);
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(passExpiry, BarcodeFormat.QR_CODE, 512, 512);
+            int width = bitMatrix.getWidth();
+            int height = bitMatrix.getHeight();
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bmp.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                }
+            }
+            sendRequestIV.setImageBitmap(bmp);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+    }
+
 }

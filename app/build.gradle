@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "app.techsol.transportmanagementsystem"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 30
         multiDexEnabled true
         versionCode 1
@@ -60,5 +60,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.karumi:dexter:6.0.1'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.journeyapps:zxing-android-embedded:4.0.2'
+    implementation "com.airbnb.android:lottie:3.4.0"
 
 }

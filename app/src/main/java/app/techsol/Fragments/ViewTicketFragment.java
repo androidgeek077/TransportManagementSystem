@@ -1,3 +1,4 @@
+
 package app.techsol.Fragments;
 
 import android.app.AlertDialog;
@@ -21,8 +22,11 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,7 +49,11 @@ public class ViewTicketFragment extends Fragment {
     FirebaseAuth auth;
     //    CustomerProfileAdapter mProductAdapter;
     RecyclerView mCustomerRecycVw;
+    private DatabaseReference UserRef;
+
     String count;
+    private String userBalance;
+    private int userBalanceInt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,8 +62,10 @@ public class ViewTicketFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_ticket, container, false);
         auth = FirebaseAuth.getInstance();
         BusesReference = FirebaseDatabase.getInstance().getReference().child("Buses");
+        UserRef = FirebaseDatabase.getInstance().getReference("Users");
         myTicketRef = FirebaseDatabase.getInstance().getReference().child("myTicketRef").child(auth.getCurrentUser().getUid());
         mCustomerRecycVw = view.findViewById(R.id.main_recycler_vw);
+        getCurrentBalance();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mCustomerRecycVw.setLayoutManager(mLayoutManager);
         return view;
@@ -84,36 +94,42 @@ public class ViewTicketFragment extends Fragment {
                 holder.bookTicketBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        String id=BusesReference.push().getKey();
-                                        DateFormat dateFormat=new SimpleDateFormat("MM/dd/yyyy");
-                                        String currentDate=dateFormat.format(Calendar.getInstance().getTime());
-                                        TicketModel model1=new TicketModel(id, auth.getCurrentUser().getUid(), model.getBusfare(), model.getBusname(), model.getBusno(), "Issued", currentDate);
-                                        myTicketRef.child(id).setValue(model1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(Task<Void> task) {
-                                                if (task.isSuccessful()){
-
-                                                    Toast.makeText(getContext(), "Your Ticket Booked Successfully", Toast.LENGTH_SHORT).show();
+                        if (userBalanceInt < Integer.parseInt(model.getBusfare())) {
+                            Toast.makeText(getContext(), "Your Current Balance is Low, Please Recharge", Toast.LENGTH_SHORT).show();
+                        } else {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            String id = BusesReference.push().getKey();
+                                            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                                            String currentDate = dateFormat.format(Calendar.getInstance().getTime());
+                                            TicketModel model1 = new TicketModel(id, auth.getCurrentUser().getUid(), model.getBusfare(), model.getBusname(), model.getBusno(), "Issued", currentDate);
+                                            myTicketRef.child(id).setValue(model1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        String remainingbalance = (userBalanceInt - 250) + "";
+                                                        UserRef.child(auth.getCurrentUser().getUid()).child("balance").setValue(remainingbalance);
+                                                        Toast.makeText(getContext(), "Your Ticket Booked Successfully", Toast.LENGTH_SHORT).show();
+                                                    }
                                                 }
-                                            }
-                                        });                                        break;
+                                            });
+                                            break;
 
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        //No button clicked
-                                        break;
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            //No button clicked
+                                            break;
+                                    }
                                 }
-                            }
-                        };
+                            };
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                                .setNegativeButton("No", dialogClickListener).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                                    .setNegativeButton("No", dialogClickListener).show();
 
+                        }
                     }
                 });
 
@@ -178,4 +194,31 @@ public class ViewTicketFragment extends Fragment {
             bookTicketBtn = itemView.findViewById(R.id.bookTicketBtn);
         }
     }
+
+    private void getCurrentBalance() {
+
+        UserRef.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                userBalance = dataSnapshot.child("balance").getValue().toString();
+//                userName = dataSnapshot.child("username").getValue().toString();
+                Toast.makeText(getContext(), userBalance, Toast.LENGTH_SHORT).show();
+                userBalanceInt = Integer.parseInt(userBalance);
+//                Glide.with(getContext())
+//                        .load( UserImgUrl)
+//                        .into(mProfilePic);
+//                Glide.with(getContext())
+//                        .load( UserImgUrl)
+//                        .into(mBgPic);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

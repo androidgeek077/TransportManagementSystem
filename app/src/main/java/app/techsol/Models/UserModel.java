@@ -79,7 +79,25 @@ String uid;
         this.usergender = usergender;
     }
 
-    public UserModel(String uid, String usertype, String username, String useremail, String userpassword, String usermobileno, String usercnic, String useraddress, String usergender) {
+
+
+    String username;
+    String useremail;
+    String userpassword;
+    String usermobileno;
+    String usercnic;
+    String useraddress;
+    String usergender;
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public UserModel(String uid, String usertype, String username, String useremail, String userpassword, String usermobileno, String usercnic, String useraddress, String usergender, String balance) {
         this.uid = uid;
         this.usertype = usertype;
         this.username = username;
@@ -89,15 +107,10 @@ String uid;
         this.usercnic = usercnic;
         this.useraddress = useraddress;
         this.usergender = usergender;
+        this.balance = balance;
     }
 
-    String username;
-    String useremail;
-    String userpassword;
-    String usermobileno;
-    String usercnic;
-    String useraddress;
-    String usergender;
+    String balance;
 
 
 }

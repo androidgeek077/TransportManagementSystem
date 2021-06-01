@@ -77,7 +77,7 @@ public class SignupActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                UserModel user = new UserModel(uid, "user",nameStr, emailStr, passwordStr, phoneStr, cnicStr, addressStr, "Male");
+                                UserModel user = new UserModel(uid, "user",nameStr, emailStr, passwordStr, phoneStr, cnicStr, addressStr, "Male", "0");
                                 myRef.child(uid).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

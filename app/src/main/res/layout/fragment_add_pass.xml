@@ -26,7 +26,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Current Date">
@@ -42,7 +42,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Select Start Date">
@@ -59,7 +59,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Select End Date">
@@ -85,7 +85,7 @@
             android:entries="@array/bustype" />
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Add Description">
@@ -107,6 +107,10 @@
             android:background="@drawable/green_color_round"
             android:text="Add"
             android:textColor="#fff" />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/myId" />
 
         <ProgressBar
             android:id="@+id/mProgressBar"
