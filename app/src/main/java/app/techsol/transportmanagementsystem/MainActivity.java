@@ -33,12 +33,20 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference UserRef;
     private String userTpye;
     String userId;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = FirebaseAuth.getInstance();
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            getUserTpye();
+        }
         UserRef = FirebaseDatabase.getInstance().getReference("Users");
 
         mProgressBar = findViewById(R.id.mProgressBar);
@@ -88,17 +96,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getUserTpye() {
+        UserRef = FirebaseDatabase.getInstance().getReference("Users");
 //        mLocationList = new ArrayList<>();
 //        mLongList = new ArrayList<>();
-        UserRef.child(userId).addValueEventListener(new ValueEventListener() {
+        UserRef.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 userTpye = dataSnapshot.child("usertype").getValue().toString();
                 if (userTpye.equals("user")) {
                     startActivity(new Intent(getBaseContext(), HomeNavDrawerActivity.class));
-                } else {
+                } else if (userTpye.equals("admin")){
                     startActivity(new Intent(getBaseContext(), AdminNavDrawerActivity.class));
+                } else{
+                    startActivity(new Intent(getBaseContext(), ConductorBottomNavActivity.class));
+
                 }
             }
 

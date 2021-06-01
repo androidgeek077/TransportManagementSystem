@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Digital Pass</string>
+    <string name="app_name">Route Master</string>
     <string name="dont_you_have_a_account_yet">
 </string>
     <string name="signup">REGISTER</string>
@@ -29,5 +29,6 @@
         <item>Wagon</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_user_maps">Map</string>
 
 </resources>

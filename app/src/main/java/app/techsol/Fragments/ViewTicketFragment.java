@@ -3,6 +3,7 @@ package app.techsol.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.snapshot.IndexedNode;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +38,7 @@ import java.util.Calendar;
 import app.techsol.Models.BusModel;
 import app.techsol.Models.TicketModel;
 import app.techsol.transportmanagementsystem.R;
+import app.techsol.transportmanagementsystem.UserMapsActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,6 +94,18 @@ public class ViewTicketFragment extends Fragment {
                 holder.passPriceTV.setText("Fare: " + model.getBusfare());
                 holder.busNoTV.setText("Bus No. " + model.getBusno());
                 holder.busTypeTV.setText("Bus Type: " + model.getBustype());
+                holder.trackLocationBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+//Add your data from getFactualResults method to bundle
+                        bundle.putString("bus_id", model.getBusid());
+//Add the bundle to the intent
+                        Intent i=new Intent(getContext(), UserMapsActivity.class);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                    }
+                });
                 holder.bookTicketBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -192,6 +207,7 @@ public class ViewTicketFragment extends Fragment {
             trackLocationBtn = itemView.findViewById(R.id.trackLocationBtn);
             busTypeTV = itemView.findViewById(R.id.busTypeTV);
             bookTicketBtn = itemView.findViewById(R.id.bookTicketBtn);
+            trackLocationBtn = itemView.findViewById(R.id.trackLocationBtn);
         }
     }
 

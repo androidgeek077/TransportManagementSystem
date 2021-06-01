@@ -113,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         BusesRef.child("buslong").setValue(location.getLongitude());
         BusesRef.child("buslat").setValue(location.getLatitude());
         LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sargodha"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Bus location"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
 
 //        getLocationModel model=new getLocationModel(location.getLatitude(), location.getLongitude());
@@ -170,30 +170,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-
-//    private ArrayList<String> getDrivers(){
-//        mLocationArr=new ArrayList<>();
-//        AddLocation.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                latDouble = (Double) dataSnapshot.child("mLatitude").getValue();
-//                langDouble = (Double) dataSnapshot.child("mLongitude").getValue();
-//                String str=Double.toString(latDouble);
-//                String str1=Double.toString(langDouble);
-//                mLatitude.setText(str);
-//                mLongitude.setText(str1);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        return mLocationArr;
-//    }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -62,6 +62,8 @@ public class AddMoneyFragment extends Fragment {
         mProgressBar=view.findViewById(R.id.mProgressBar);
         AddMoneyET=view.findViewById(R.id.AddMoneyET);
         AddmoneyBtn=view.findViewById(R.id.AddmoneyBtn);
+        getCurrentBalance();
+
         AddmoneyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,10 +71,9 @@ public class AddMoneyFragment extends Fragment {
                     Toast.makeText(getContext(), "Please Add Money First", Toast.LENGTH_SHORT).show();
                 } else {
                     mProgressBar.setVisibility(View.VISIBLE);
-                    String userid=auth.getCurrentUser().getUid();
                     moneyStr=AddMoneyET.getText().toString();
                     userBalanceInt=userBalanceInt+(Integer.parseInt(moneyStr));
-                    ref.child(userid).child("balance").setValue(""+userBalanceInt).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    ref.child(userId).child("balance").setValue(""+userBalanceInt).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
@@ -102,16 +103,11 @@ public class AddMoneyFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                userBalance = dataSnapshot.child("balance").getValue().toString();
-//                userName = dataSnapshot.child("username").getValue().toString();
-//                Toast.makeText(getContext(), userBalance, Toast.LENGTH_SHORT).show();
-                userBalanceInt = Integer.parseInt(userBalance);
-//                Glide.with(getContext())
-//                        .load( UserImgUrl)
-//                        .into(mProfilePic);
-//                Glide.with(getContext())
-//                        .load( UserImgUrl)
-//                        .into(mBgPic);
+                if (dataSnapshot.exists()){
+                    String userBalance = dataSnapshot.getValue().toString();
+                    userBalanceInt = Integer.parseInt(userBalance);
+                }
+
 
             }
 
