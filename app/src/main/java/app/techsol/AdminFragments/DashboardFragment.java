@@ -2,12 +2,13 @@ package app.techsol.AdminFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -18,11 +19,17 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import app.techsol.Models.UserModel;
 import app.techsol.transportmanagementsystem.R;
 
 
@@ -32,6 +39,10 @@ import app.techsol.transportmanagementsystem.R;
 public class DashboardFragment extends Fragment {
     PieChart pieChart;
     BarChart barChart;
+    private DatabaseReference UserRef;
+    private FirebaseAuth auth;
+    List<BarEntry> entryList;
+
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -43,24 +54,19 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        UserRef = FirebaseDatabase.getInstance().getReference("Users");
+        auth = FirebaseAuth.getInstance();
         pieChart = view.findViewById(R.id.piChartOverview);
         barChart = view.findViewById(R.id.barChartOverview);
-
-        setUpPieChart(100,200);
+        setUpPieChart(100, 200);
         setUpBarChart();
-
-
-
-
-
         return view;
     }
 
-    private void setUpPieChart(int wins,int losses){
+    private void setUpPieChart(int approved, int nonApproved) {
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setExtraOffsets(5, 10, 5, 5);
         pieChart.setDragDecelerationFrictionCoef(0.95f);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
@@ -79,22 +85,16 @@ public class DashboardFragment extends Fragment {
         pieChart.setHighlightPerTapEnabled(true);
 
 
-
-
-
         List<PieEntry> pieEntriesWin = new ArrayList<>();
-        // for wins
-        pieEntriesWin.add(new PieEntry(wins));
+        // for approved
+        pieEntriesWin.add(new PieEntry(approved));
         // for loses
-        pieEntriesWin.add(new PieEntry(losses));
+        pieEntriesWin.add(new PieEntry(nonApproved));
 
-        PieDataSet dataSetWin = new PieDataSet(pieEntriesWin,"Wins/loses");
-
-
+        PieDataSet dataSetWin = new PieDataSet(pieEntriesWin, "Approved/NonApproved");
 
 
-
-        int[] colors = new int[]{getContext().getResources().getColor(R.color.colorWin),getContext().getResources().getColor(R.color.colorLose)};
+        int[] colors = new int[]{getContext().getResources().getColor(R.color.colorWin), getContext().getResources().getColor(R.color.colorLose)};
 
         //dataSetWin.setColors(new int[]{Color.GREEN,Color.RED});
         dataSetWin.setColors(colors);
@@ -107,7 +107,7 @@ public class DashboardFragment extends Fragment {
         pieChart.setData(data);
     }
 
-    private void setUpBarChart(){
+    private void setUpBarChart() {
         barChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -118,28 +118,52 @@ public class DashboardFragment extends Fragment {
 
         barChart.setDrawGridBackground(false);
 
+        entryList = new ArrayList<>();
+        getCurrentBalance();
 
-        List<BarEntry> entryList = new ArrayList<>();
-        entryList.add(new BarEntry(1,1,"Toto"));
-        entryList.add(new BarEntry(2,4,"Tata"));
-        //entryList.add(new BarEntry(3,7,getContext().getResources().getDrawable(R.drawable.ic_groups)));
-        entryList.add(new BarEntry(3,7,"Tetu"));
-        entryList.add(new BarEntry(4,2,"Taty"));
-        entryList.add(new BarEntry(5,4,"Tutu"));
-        entryList.add(new BarEntry(6,1,"Tete"));
-        entryList.add(new BarEntry(7,4,"Tktk"));
-
-        BarDataSet dataSet = new BarDataSet(entryList,"Points Graph");
-
+//        entryList.add(new BarEntry(1, 1, "Toto"));
+//        entryList.add(new BarEntry(2, 4, "Tata"));
+//        //entryList.add(new BarEntry(3,7,getContext().getResources().getDrawable(R.drawable.ic_groups)));
+//        entryList.add(new BarEntry(3, 7, "Tetu"));
+//        entryList.add(new BarEntry(4, 2, "Taty"));
+//        entryList.add(new BarEntry(5, 4, "Tutu"));
+//        entryList.add(new BarEntry(6, 1, "Tete"));
+//        entryList.add(new BarEntry(7, 4, "Tktk"));
 
 
+    }
 
-        // dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+    private void getCurrentBalance() {
 
-        BarData data = new BarData(dataSet);
+        UserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int x=0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    x=x+1;
+                    UserModel model = postSnapshot.getValue(UserModel.class);
+                    entryList.add(new BarEntry(x, Integer.parseInt(model.getBalance()), model.getUsername()));
+
+                }
+                    Toast.makeText(getContext(), ""+entryList, Toast.LENGTH_SHORT).show();
+                BarDataSet dataSet = new BarDataSet(entryList, "User Balance");
 
 
-        barChart.setData(data);
+                // dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+                BarData data = new BarData(dataSet);
+
+
+                barChart.setData(data);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
 }

@@ -75,7 +75,6 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        fragment = new DashboardFragment();
         FragmentLoadinManagerWithBackStack(new ProfileFragment());
         gerUserInfo();
     }

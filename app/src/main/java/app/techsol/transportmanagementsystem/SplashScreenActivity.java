@@ -76,15 +76,18 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     if (userTpye.equals("user")) {
                         startActivity(new Intent(SplashScreenActivity.this, HomeNavDrawerActivity.class));
-
+                        finish();
                     } else if (userTpye.equals("admin")) {
                         startActivity(new Intent(SplashScreenActivity.this, AdminNavDrawerActivity.class));
+                        finish();
 
                     } else if (userTpye.equals("conductor")) {
                         startActivity(new Intent(SplashScreenActivity.this, ConductorBottomNavActivity.class));
+                        finish();
 
                     } else if (userTpye.isEmpty()){
                         startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                        finish();
 
                 }
             }

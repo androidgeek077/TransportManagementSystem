@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                finish();
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -106,10 +107,16 @@ public class MainActivity extends AppCompatActivity {
                 userTpye = dataSnapshot.child("usertype").getValue().toString();
                 if (userTpye.equals("user")) {
                     startActivity(new Intent(getBaseContext(), HomeNavDrawerActivity.class));
+                    finish();
+
                 } else if (userTpye.equals("admin")){
                     startActivity(new Intent(getBaseContext(), AdminNavDrawerActivity.class));
+                    finish();
+
                 } else{
                     startActivity(new Intent(getBaseContext(), ConductorBottomNavActivity.class));
+                    finish();
+
 
                 }
             }
