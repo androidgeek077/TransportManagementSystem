@@ -91,7 +91,7 @@ public class DashboardFragment extends Fragment {
         // for loses
         pieEntriesWin.add(new PieEntry(nonApproved));
 
-        PieDataSet dataSetWin = new PieDataSet(pieEntriesWin, "Approved/NonApproved");
+        PieDataSet dataSetWin = new PieDataSet(pieEntriesWin, "Approved Passes/NonApproved Passes");
 
 
         int[] colors = new int[]{getContext().getResources().getColor(R.color.colorWin), getContext().getResources().getColor(R.color.colorLose)};
@@ -143,12 +143,8 @@ public class DashboardFragment extends Fragment {
                     x=x+1;
                     UserModel model = postSnapshot.getValue(UserModel.class);
                     entryList.add(new BarEntry(x, Integer.parseInt(model.getBalance()), model.getUsername()));
-
                 }
-                    Toast.makeText(getContext(), ""+entryList, Toast.LENGTH_SHORT).show();
                 BarDataSet dataSet = new BarDataSet(entryList, "User Balance");
-
-
                 // dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
                 BarData data = new BarData(dataSet);
