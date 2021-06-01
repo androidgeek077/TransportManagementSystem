@@ -66,5 +66,7 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.journeyapps:zxing-android-embedded:4.0.2'
     implementation "com.airbnb.android:lottie:3.4.0"
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
 
 }

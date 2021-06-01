@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,18 +15,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
-import app.techsol.Fragments.AddMoneyFragment;
 import app.techsol.Fragments.AddPassFragment;
-import app.techsol.Fragments.ApplyPassFragment;
-import app.techsol.Fragments.BookTicketFragment;
-import app.techsol.Fragments.DashboardFragment;
+import app.techsol.AdminFragments.DashboardFragment;
 import app.techsol.Fragments.ProfileFragment;
 import app.techsol.Fragments.ViewPassFragment;
 import app.techsol.Fragments.ViewTicketFragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class HomeNavDrawerActivity extends AppCompatActivity
@@ -36,12 +36,23 @@ public class HomeNavDrawerActivity extends AppCompatActivity
     DashboardFragment fragment;
     String cutomer_id;
     FirebaseAuth auth;
+    String userName, userEmail;
+    TextView headerUserEmail,headerUserName;
+    private String userProfileURl;
+    private CircleImageView headerProfileIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_nav_drawer);
+        userName=getIntent().getStringExtra("name");
+        userEmail=getIntent().getStringExtra("email");
+        userProfileURl=getIntent().getStringExtra("profileurl");
+
+        Toast.makeText(this, userName+","+userEmail+","+userProfileURl, Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+
         setSupportActionBar(toolbar);
         auth=FirebaseAuth.getInstance();
 //        getAllProducts();getDahBoardData();
@@ -49,6 +60,16 @@ public class HomeNavDrawerActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        headerUserEmail = headerView.findViewById(R.id.headerUserEmail);
+        headerUserName = headerView.findViewById(R.id.headerUserName);
+        headerProfileIV = headerView.findViewById(R.id.headerProfileIV);
+        Glide.with(getApplicationContext())
+                .load( userProfileURl)
+                .into(headerProfileIV);
+
+        headerUserEmail.setText(userEmail);
+        headerUserName.setText(userName);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -56,6 +77,9 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         fragment = new DashboardFragment();
         FragmentLoadinManagerWithBackStack(new ProfileFragment());
+
+
+
     }
 
     @Override

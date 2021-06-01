@@ -1,4 +1,4 @@
-package app.techsol.Fragments;
+package app.techsol.AdminFragments;
 
 import android.os.Bundle;
 

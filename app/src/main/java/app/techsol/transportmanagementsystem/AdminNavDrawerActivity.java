@@ -12,20 +12,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import app.techsol.AdminFragments.AddBusFragment;
-import app.techsol.AdminFragments.AddConductorFragment;
 import app.techsol.AdminFragments.ManageUsersFragment;
 import app.techsol.AdminFragments.PassReportsFragment;
-import app.techsol.Fragments.AddMoneyFragment;
-import app.techsol.Fragments.AddPassFragment;
-import app.techsol.Fragments.BookTicketFragment;
-import app.techsol.Fragments.DashboardFragment;
-import app.techsol.Fragments.ViewPassFragment;
+import app.techsol.AdminFragments.DashboardFragment;
 
 public class AdminNavDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

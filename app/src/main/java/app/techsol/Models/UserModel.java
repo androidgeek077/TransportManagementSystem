@@ -112,5 +112,30 @@ String uid;
 
     String balance;
 
+    public String getProfilepicurl() {
+        return profilepicurl;
+    }
+
+    public void setProfilepicurl(String profilepicurl) {
+        this.profilepicurl = profilepicurl;
+    }
+
+    public UserModel(String uid, String usertype, String username, String useremail, String userpassword, String usermobileno, String usercnic, String useraddress, String usergender, String balance, String profilepicurl) {
+        this.uid = uid;
+        this.usertype = usertype;
+        this.username = username;
+        this.useremail = useremail;
+        this.userpassword = userpassword;
+        this.usermobileno = usermobileno;
+        this.usercnic = usercnic;
+        this.useraddress = useraddress;
+        this.usergender = usergender;
+        this.balance = balance;
+        this.profilepicurl = profilepicurl;
+    }
+
+    String profilepicurl;
+
+
 
 }

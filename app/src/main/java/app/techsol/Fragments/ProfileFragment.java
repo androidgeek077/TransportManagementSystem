@@ -164,14 +164,14 @@ public class ProfileFragment extends Fragment {
     public static class CustomersViewHolder extends  RecyclerView.ViewHolder {
 
 
-        TextView busRouteTV, ticketPriceTV, busNoTV, endDateTV, tickcteStatusTV, busTimeTV, ticketExpiryTV;
+        TextView busRouteTV, ticketPriceTV, busNoTV, tickcteStatusTV, busTimeTV, ticketExpiryTV;
         
 
         public CustomersViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            busRouteTV = (TextView) itemView.findViewById(R.id.busRouteTV);
-            ticketPriceTV = (TextView) itemView.findViewById(R.id.ticketPriceTV);
+            busRouteTV =  itemView.findViewById(R.id.busRouteTV);
+            ticketPriceTV =  itemView.findViewById(R.id.ticketPriceTV);
             busNoTV = itemView.findViewById(R.id.busNoTV);
             tickcteStatusTV = itemView.findViewById(R.id.tickcteStatusTV);
             busTimeTV = itemView.findViewById(R.id.busTimeTV);

@@ -27,6 +27,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private DatabaseReference UserRef;
     private String userTpye="";
+    private String userName;
+    private String userEmail;
+    private String userProfileURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.image);
         if (auth.getCurrentUser() != null) {
             getUserTpye();
+            getCurrentBalance();
         }
         final Boolean session = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("session", false);
 
@@ -72,11 +76,23 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
 
                     if (userTpye.equals("user")) {
-                        startActivity(new Intent(getBaseContext(), HomeNavDrawerActivity.class));
+                        Intent intent=new Intent(getBaseContext(), HomeNavDrawerActivity.class);
+                        intent.putExtra("email", userEmail);
+                        intent.putExtra("name", userName);
+                        intent.putExtra("profileurl", userProfileURL);
+                        startActivity(intent);
                     } else if (userTpye.equals("admin")) {
-                        startActivity(new Intent(getBaseContext(), AdminNavDrawerActivity.class));
+                        Intent intent=new Intent(getBaseContext(), AdminNavDrawerActivity.class);
+                        intent.putExtra("email", userEmail);
+                        intent.putExtra("name", userName);
+                        intent.putExtra("profileurl", userProfileURL);
+                        startActivity(intent);
                     } else if (userTpye.equals("conductor")) {
-                        startActivity(new Intent(getBaseContext(), ConductorBottomNavActivity.class));
+                        Intent intent=new Intent(getBaseContext(), ConductorBottomNavActivity.class);
+                        intent.putExtra("email", userEmail);
+                        intent.putExtra("name", userName);
+                        intent.putExtra("profileurl", userProfileURL);
+                        startActivity(intent);
                     } else if (userTpye.isEmpty()){
                         startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
 
@@ -108,6 +124,26 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
         return userTpye;
     }
+
+    private void getCurrentBalance() {
+
+        UserRef.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                userProfileURL = dataSnapshot.child("profilepicurl").getValue().toString();
+                userEmail = dataSnapshot.child("useremail").getValue().toString();
+                userName = dataSnapshot.child("username").getValue().toString();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }
 
