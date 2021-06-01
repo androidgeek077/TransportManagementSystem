@@ -1,5 +1,6 @@
 package app.techsol.AdminFragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,59 +9,137 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import app.techsol.transportmanagementsystem.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DashboardFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class DashboardFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    PieChart pieChart;
+    BarChart barChart;
 
     public DashboardFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DashboardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DashboardFragment newInstance(String param1, String param2) {
-        DashboardFragment fragment = new DashboardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        pieChart = view.findViewById(R.id.piChartOverview);
+        barChart = view.findViewById(R.id.barChartOverview);
+
+        setUpPieChart(100,200);
+        setUpBarChart();
+
+
+
+
+
+        return view;
     }
+
+    private void setUpPieChart(int wins,int losses){
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+
+        pieChart.setTransparentCircleColor(Color.WHITE);
+        pieChart.setTransparentCircleAlpha(110);
+
+        pieChart.setHoleRadius(40f);
+        pieChart.setTransparentCircleRadius(45f);
+
+        pieChart.setDrawCenterText(true);
+
+        pieChart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        pieChart.setRotationEnabled(true);
+        pieChart.setHighlightPerTapEnabled(true);
+
+
+
+
+
+        List<PieEntry> pieEntriesWin = new ArrayList<>();
+        // for wins
+        pieEntriesWin.add(new PieEntry(wins));
+        // for loses
+        pieEntriesWin.add(new PieEntry(losses));
+
+        PieDataSet dataSetWin = new PieDataSet(pieEntriesWin,"Wins/loses");
+
+
+
+
+
+        int[] colors = new int[]{getContext().getResources().getColor(R.color.colorWin),getContext().getResources().getColor(R.color.colorLose)};
+
+        //dataSetWin.setColors(new int[]{Color.GREEN,Color.RED});
+        dataSetWin.setColors(colors);
+        PieData data = new PieData(dataSetWin);
+
+
+        data.setValueFormatter(new PercentFormatter(pieChart));
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        pieChart.setData(data);
+    }
+
+    private void setUpBarChart(){
+        barChart.getDescription().setEnabled(false);
+
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        barChart.setMaxVisibleValueCount(60);
+
+        barChart.setPinchZoom(false);
+
+        barChart.setDrawGridBackground(false);
+
+
+        List<BarEntry> entryList = new ArrayList<>();
+        entryList.add(new BarEntry(1,1,"Toto"));
+        entryList.add(new BarEntry(2,4,"Tata"));
+        //entryList.add(new BarEntry(3,7,getContext().getResources().getDrawable(R.drawable.ic_groups)));
+        entryList.add(new BarEntry(3,7,"Tetu"));
+        entryList.add(new BarEntry(4,2,"Taty"));
+        entryList.add(new BarEntry(5,4,"Tutu"));
+        entryList.add(new BarEntry(6,1,"Tete"));
+        entryList.add(new BarEntry(7,4,"Tktk"));
+
+        BarDataSet dataSet = new BarDataSet(entryList,"Points Graph");
+
+
+
+
+        // dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+        BarData data = new BarData(dataSet);
+
+
+        barChart.setData(data);
+    }
+
 }

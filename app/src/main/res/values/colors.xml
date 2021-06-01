@@ -5,6 +5,8 @@
     <color name="colorAccent">#000000</color>
     <color name="colorDarkGrey">#ACA6A6</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWin">#3B9C6C</color>
+    <color name="colorLose">#B31E4B</color>
 
     <color name="white">#FFFFFF</color>
     <color name="SuccessAlert">#4CAF50</color>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +19,11 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import app.techsol.Fragments.AddPassFragment;
 import app.techsol.AdminFragments.DashboardFragment;
@@ -31,45 +37,39 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     int IncomingDataLength = 0;
+    TextView headerUserEmail,headerUserName;
+    private String userProfileURL;
+    private DatabaseReference UserRef;
+
     TextView textCartItemCount;
     public int mCartItemCount;
     DashboardFragment fragment;
     String cutomer_id;
     FirebaseAuth auth;
     String userName, userEmail;
-    TextView headerUserEmail,headerUserName;
-    private String userProfileURl;
     private CircleImageView headerProfileIV;
+    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_nav_drawer);
-        userName=getIntent().getStringExtra("name");
-        userEmail=getIntent().getStringExtra("email");
-        userProfileURl=getIntent().getStringExtra("profileurl");
 
-        Toast.makeText(this, userName+","+userEmail+","+userProfileURl, Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
-
 
         setSupportActionBar(toolbar);
         auth=FirebaseAuth.getInstance();
+        UserRef = FirebaseDatabase.getInstance().getReference("Users");
 //        getAllProducts();getDahBoardData();
 ////        getOrders();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
         headerUserEmail = headerView.findViewById(R.id.headerUserEmail);
         headerUserName = headerView.findViewById(R.id.headerUserName);
         headerProfileIV = headerView.findViewById(R.id.headerProfileIV);
-        Glide.with(getApplicationContext())
-                .load( userProfileURl)
-                .into(headerProfileIV);
 
-        headerUserEmail.setText(userEmail);
-        headerUserName.setText(userName);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -77,9 +77,7 @@ public class HomeNavDrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         fragment = new DashboardFragment();
         FragmentLoadinManagerWithBackStack(new ProfileFragment());
-
-
-
+        gerUserInfo();
     }
 
     @Override
@@ -180,6 +178,33 @@ public class HomeNavDrawerActivity extends AppCompatActivity
 
     }
 
+    private void gerUserInfo() {
+
+        UserRef.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Toast.makeText(HomeNavDrawerActivity.this, ""+dataSnapshot, Toast.LENGTH_SHORT).show();
+                userProfileURL = dataSnapshot.child("profilepicurl").getValue().toString();
+                userEmail = dataSnapshot.child("useremail").getValue().toString();
+                userName = dataSnapshot.child("username").getValue().toString();
+                Toast.makeText(HomeNavDrawerActivity.this, userProfileURL, Toast.LENGTH_SHORT).show();
+                Glide.with(HomeNavDrawerActivity.this)
+                        .load(userProfileURL)
+                        .into(headerProfileIV);
+                headerUserEmail.setText(userEmail);
+                headerUserName.setText(userName);
+
+
+//                Toast.makeText(getApplicationContext(), userName+","+userEmail+","+userProfileURl, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package app.techsol.transportmanagementsystem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,19 +12,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import app.techsol.AdminFragments.AddBusFragment;
 import app.techsol.AdminFragments.ManageUsersFragment;
 import app.techsol.AdminFragments.PassReportsFragment;
 import app.techsol.AdminFragments.DashboardFragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdminNavDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DashboardFragment fragment;
     private FirebaseAuth auth;
+    String userName, userEmail;
+    private DatabaseReference UserRef;
+    TextView headerUserEmail,headerUserName;
+    private String userProfileURl;
+    private CircleImageView headerProfileIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +47,8 @@ public class AdminNavDrawerActivity extends AppCompatActivity implements Navigat
         auth=FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        UserRef = FirebaseDatabase.getInstance().getReference("Users");
+        gerUserInfo();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -42,6 +57,12 @@ public class AdminNavDrawerActivity extends AppCompatActivity implements Navigat
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         fragment = new DashboardFragment();
+        FragmentLoadinManagerWithBackStack(fragment);
+        View headerView = navigationView.getHeaderView(0);
+        headerUserEmail = headerView.findViewById(R.id.headerUserEmail);
+        headerUserName = headerView.findViewById(R.id.headerUserName);
+        headerProfileIV = headerView.findViewById(R.id.headerProfileIV);
+
     }
 
     @Override
@@ -137,6 +158,29 @@ public class AdminNavDrawerActivity extends AppCompatActivity implements Navigat
 
     }
 
+    private void gerUserInfo() {
+
+        UserRef.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                userProfileURl = dataSnapshot.child("profilepicurl").getValue().toString();
+                userEmail = dataSnapshot.child("useremail").getValue().toString();
+                userName = dataSnapshot.child("username").getValue().toString();
+                Glide.with(getApplicationContext())
+                        .load( userProfileURl)
+                        .into(headerProfileIV);
+
+                headerUserEmail.setText(userEmail);
+                headerUserName.setText(userName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
 }
