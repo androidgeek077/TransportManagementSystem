@@ -27,6 +27,8 @@
         <item>Daewoo</item>
         <item>Hi-Ass</item>
         <item>Wagon</item>
+        <item>Bandial</item>
+        <item>Coaster</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_user_maps">Map</string>

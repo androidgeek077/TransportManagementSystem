@@ -219,7 +219,6 @@ public class ViewTicketFragment extends Fragment {
 
                 userBalance = dataSnapshot.child("balance").getValue().toString();
 //                userName = dataSnapshot.child("username").getValue().toString();
-                Toast.makeText(getContext(), userBalance, Toast.LENGTH_SHORT).show();
                 userBalanceInt = Integer.parseInt(userBalance);
 //                Glide.with(getContext())
 //                        .load( UserImgUrl)

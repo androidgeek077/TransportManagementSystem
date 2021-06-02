@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -119,7 +118,7 @@ public class DashboardFragment extends Fragment {
         barChart.setDrawGridBackground(false);
 
         entryList = new ArrayList<>();
-        getCurrentBalance();
+        getUserBalance();
 
 //        entryList.add(new BarEntry(1, 1, "Toto"));
 //        entryList.add(new BarEntry(2, 4, "Tata"));
@@ -133,7 +132,7 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    private void getCurrentBalance() {
+    private void getUserBalance() {
 
         UserRef.addValueEventListener(new ValueEventListener() {
             @Override
